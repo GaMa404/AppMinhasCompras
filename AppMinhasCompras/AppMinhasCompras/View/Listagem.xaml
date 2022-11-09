@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMinhasCompras.View.Listagem"
+             Title="Lista de Compras">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Somar" Clicked="ToolbarItem_Clicked_Somar" />
+        <ToolbarItem Text="Novo" Clicked="ToolbarItem_Clicked_Novo" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="txt_busca" Placeholder="Pesquisar produto" />
+
+            <RefreshView x:Name="ref_carregando" IsRefreshing="true">
+                <ListView x:Name="lst_produto">
+                    <ListView.Header>
+                        <Grid RowDefinitions="Auto" ColumnDefinitions="*, Auto, Auto">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Descrição" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="Qnt" />
+                            <Label Grid.Row="0" Grid.Column="2" Text="Preço" />
+                        </Grid>
+                    </ListView.Header>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid RowDefinitions="Auto" ColumnDefinitions="*, Auto, Auto">
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding descricao}" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding quantidade}" />
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding preco}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RefreshView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
