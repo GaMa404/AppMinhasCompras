@@ -16,14 +16,23 @@ namespace AppMinhasCompras.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Listagem : ContentPage
     {
+        ObservableCollection<Produto> lista_produtos = new ObservableCollection<Produto>();
+
         public Listagem()
         {
             InitializeComponent();
+
+            lst_produtos.ItemsSource = lista_produtos;
         }
 
         private void ToolbarItem_Clicked_Somar(object sender, EventArgs e)
         {
-    
+            double soma = lista_produtos.Sum(i => i.preco * i.quantidade);
+
+            string msg = "Valor total da compra: " + soma;
+
+            DisplayAlert("Total", msg, "OK");
+
         }
 
         private void ToolbarItem_Clicked_Novo(object sender, EventArgs e)
@@ -40,20 +49,21 @@ namespace AppMinhasCompras.View
 
         protected override void OnAppearing()
         {
-            ObservableCollection<Produto> lista_produtos = new ObservableCollection<Produto>();
-
-            System.Threading.Tasks.Task.Run(async () =>
+            if (lista_produtos.Count == 0)
             {
-                List<Produto> temp = await App.Database.getAll();
-
-                foreach (Produto item in temp)
+                System.Threading.Tasks.Task.Run(async () =>
                 {
-                    lista_produtos.Add(item);
-                }
+                    List<Produto> temp = await App.Database.getAll();
 
-                ref_carregando.IsRefreshing = false;
-            });
+                    foreach (Produto item in temp)
+                    {
+                        lista_produtos.Add(item);
+                    }
 
+                    ref_carregando.IsRefreshing = false;
+                });
+            }
+             
             lst_produto.ItemsSource = lista_produtos;
         }
     }
